@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.web.mapper.QnaMapper">
+  
+	<select id="selectBoardList" resultType="QnaVO">
+		SELECT * FROM tbl_qnaboard
+		ORDER BY `group` DESC, seq ASC
+    </select>    
+    <insert id="insertBoard">
+        INSERT INTO tbl_qnaboard (
+            title, content, writer, reg_datetime,
+            `group`, seq, level)
+        SELECT #{title}, #{content}, #{writer}, now(),
+        	IFNULL(MAX(code), 0) + 1, 0, 0 FROM tbl_qnaboard
+    </insert>
+    
+    <insert id="insertAnswer">
+    	INSERT INTO tbl_qnaboard (
+    		 title, content, writer, reg_datetime,
+            `group`, seq, level)
+    	VALUES (#{title}, #{content}, #{writer}, now(),
+    		#{group}, #{seq}, #{level})
+   	</insert>
+   	
+   	<update id="upSequance">
+   		UPDATE tbl_qnaboard
+   		SET seq = seq + 1
+   		WHERE `group` = #{group} AND seq >= #{seq}
+   	</update>
+    
+    <update id="updateBoard">
+        UPDATE tbl_qnaboard 
+        SET title = #{title}, content = #{content}
+        WHERE code = #{code}
+    </update>
+    
+    <delete id="deleteBoard">
+        DELETE FROM tbl_qnaboard
+        WHERE code = #{code}
+    </delete>
+    
+    <select id="selectBoardByCode" resultType="QnaVO">
+        SELECT * FROM tbl_qnaboard
+        WHERE code = #{code}
+    </select>
+    
+    <select id="selectBoardListByPage" resultType="QnaVO">
+    	SELECT * FROM tbl_qnaboard
+    	WHERE code > 0
+    	ORDER BY `group` DESC, seq ASC
+    	LIMIT #{startNum}, #{perPage}
+    </select>
+    
+    <select id="countBoard" resultType="int">
+    	SELECT COUNT(*) FROM tbl_qnaboard
+    </select>
+    
+    <update id="updateViewCnt">
+    	UPDATE tbl_qnaboard 
+    	SET view_cnt = view_cnt + 1
+    	WHERE code = #{code}
+    </update>
+    
+    <update id="updateReplyCnt">
+    	UPDATE tbl_qnaboard
+    	SET replycnt = replycnt + #{amount}
+    	WHERE code = #{code}
+    </update>
+    
+    <select id="getCode" resultType="int">
+    	SELECT code FROM tbl_qnaboard
+    	WHERE 
+    </select>
+</mapper>

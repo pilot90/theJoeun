@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.web.mapper.BoardMapper">
+  
+	<select id="selectBoardList" resultType="BoardVO">
+    	select * from tbl_board 
+    	order by code desc, reg_datetime desc;
+    </select>
+    
+    <insert id="insertBoard">
+        insert into
+        tbl_board(
+            title
+            , content
+            , writer
+            , reg_datetime
+            , view_cnt)
+        values(
+            #{title}
+            , #{content}
+            , #{writer}
+            , now()
+            , #{view_cnt})
+    </insert>
+    
+    <update id="updateBoard">
+        update tbl_board set
+            title = #{title}
+            , content = #{content}
+            , writer = #{writer}
+            , reg_datetime = now()
+            , view_cnt = #{view_cnt}
+        where
+            code = #{code}
+    </update>
+    
+    <delete id="deleteBoard">
+        delete from tbl_board
+        where
+            code = #{code}
+    </delete>
+    
+    <select id="selectBoardByCode" resultType="BoardVO">
+        select * from tbl_board
+        where
+            code = #{code}
+    </select>
+    
+    <select id="selectBoardListByPage" resultType="BoardVO">
+    	select * from tbl_board 
+    	order by code desc, reg_datetime desc
+    	limit #{startNum}, #{perPage}
+    </select>
+    
+    <select id="countBoard" resultType="int">
+    	select count(*) from tbl_board
+    </select>
+    
+    <update id="updateViewCnt">
+    	update tbl_board set 
+    		view_cnt = view_cnt + 1
+    	where
+    		code = #{code}
+    </update>
+    
+</mapper>

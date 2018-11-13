@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.web.mapper.MemberMapper">
+	<select id="getMemberList" resultType="MemberVO">
+		select * from tbl_member
+	</select>
+	
+	<insert id="registerMember">
+		insert into tbl_member
+		(mbrId, mbrPw, mbrPwCheck, mbrName)
+		values (#{mbrId}, #{mbrPw}, #{mbrPwCheck}, #{mbrName})
+	</insert>
+	
+	<update id="updateMember">
+		update tbl_member
+		set mbrPw=#{mbrPw}, mbrPwCheck=#{mbrPwCheck}, mbrName=#{mbrName}
+		where mbrCode=#{mbrCode}
+	</update>
+	
+	<delete id="removeMember">
+		delete from tbl_member
+		where mbrCode=#{code}
+	</delete>
+	
+	<select id="getMemberByCode" resultType="MemberVO">
+		select * from tbl_member
+		where mbrCode=#{code}
+	</select>
+	
+	<select id="getMemberById" resultType="MemberVO">
+		select * from tbl_member
+		where mbrId=#{mbrId}
+	</select>
+	
+	<select id="loginMember" resultType="MemberVO">
+		select * from tbl_member
+		where mbrId=#{mbrId} and mbrPw=#{mbrPw}
+	</select>
+</mapper>
+	
